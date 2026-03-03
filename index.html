@@ -3,20 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moodboard AI</title>
+  <title>GoalFinder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1 class="title">Moodboard <span>AI</span></h1>
-    <div class="controls glass">
-      <input id="moodInput" type="text" placeholder="Enter your mood..." />
-      <button id="generateBtn">Generate</button>
-      <button id="themeToggle">🌗</button>
-    </div>
-    <div class="moodboard-grid" id="moodGrid"></div>
+  <div class="background-blobs" aria-hidden="true">
+    <span class="blob blob-one"></span>
+    <span class="blob blob-two"></span>
+    <span class="blob blob-three"></span>
   </div>
-  <p class="credit">made by nilim</p>
+
+  <main class="app-shell">
+    <header>
+      <h1>GoalFinder</h1>
+      <p class="subtitle">Reveal deeper goals and psychological needs with visual-first AI insights.</p>
+    </header>
+
+    <section class="query-panel liquid-glass" aria-label="Goal query form">
+      <label for="queryInput" class="sr-only">Describe your goal</label>
+      <input
+        id="queryInput"
+        type="text"
+        placeholder="Type what you want, fear, or are chasing..."
+        autocomplete="off"
+      />
+      <button id="analyzeBtn" type="button">Analyze</button>
+      <button id="resetBtn" class="ghost" type="button">Reset</button>
+    </section>
+
+    <section class="status-panel liquid-glass" id="statusPanel" aria-live="polite">
+      <div class="status-copy" id="statusText">Ready to analyze your next query.</div>
+      <div class="progress-track">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <div id="loadingDots" class="loading-dots" hidden>
+        <span></span><span></span><span></span>
+      </div>
+    </section>
+
+    <section id="resultsSection" class="results" hidden>
+      <article class="results-card liquid-glass">
+        <h2>Detected Core Need Profile</h2>
+        <div id="needsBars" class="needs-bars"></div>
+      </article>
+
+      <article class="results-card liquid-glass">
+        <h2>Goal Likelihood</h2>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120" class="ring-chart" aria-label="Goal likelihood percentage">
+            <circle cx="60" cy="60" r="48" class="ring-bg"></circle>
+            <circle cx="60" cy="60" r="48" class="ring-progress" id="ringProgress"></circle>
+          </svg>
+          <div id="likelihoodText" class="ring-text">0%</div>
+        </div>
+        <p id="insightText" class="insight"></p>
+      </article>
+    </section>
+
+    <section class="history-card liquid-glass" aria-label="Query history">
+      <div class="history-header">
+        <h2>History</h2>
+      </div>
+      <ul id="historyList" class="history-list">
+        <li class="history-empty">No analyses yet.</li>
+      </ul>
+    </section>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
