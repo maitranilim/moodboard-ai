@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GoalFinder</title>
+  <title>GoalFinder — Reveal Your Deeper Motivations</title>
+  <meta name="description" content="Reveal deeper goals and psychological needs with visual-first AI insights." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -22,14 +23,28 @@
       <p class="subtitle">Reveal deeper goals and psychological needs with visual-first AI insights.</p>
     </header>
 
+    <!-- Example prompt chips -->
+    <div class="chips-row" aria-label="Example prompts">
+      <span class="chips-label">Try:</span>
+      <button class="chip" type="button" data-prompt="I want to be financially independent and quit my 9-to-5 job">Financial freedom</button>
+      <button class="chip" type="button" data-prompt="I feel lonely and want to find a meaningful relationship">Find connection</button>
+      <button class="chip" type="button" data-prompt="I must prove I can build a successful startup before I turn 30">Prove myself</button>
+      <button class="chip" type="button" data-prompt="I want to get fit and have more energy every day">Get healthier</button>
+      <button class="chip" type="button" data-prompt="I am anxious about the future and want more stability in my life">Find stability</button>
+    </div>
+
     <section class="query-panel liquid-glass" aria-label="Goal query form">
-      <label for="queryInput" class="sr-only">Describe your goal</label>
-      <input
-        id="queryInput"
-        type="text"
-        placeholder="Type what you want, fear, or are chasing..."
-        autocomplete="off"
-      />
+      <div class="input-wrap">
+        <label for="queryInput" class="sr-only">Describe your goal</label>
+        <input
+          id="queryInput"
+          type="text"
+          placeholder="Type what you want, fear, or are chasing..."
+          autocomplete="off"
+          maxlength="280"
+        />
+        <span class="char-counter" id="charCounter">0 / 280</span>
+      </div>
       <button id="analyzeBtn" type="button">Analyze</button>
       <button id="resetBtn" class="ghost" type="button">Reset</button>
     </section>
@@ -45,11 +60,22 @@
     </section>
 
     <section id="resultsSection" class="results" hidden>
-      <article class="results-card liquid-glass">
+      <!-- Need bars -->
+      <article class="results-card liquid-glass" id="needsCard">
         <h2>Detected Core Need Profile</h2>
-        <div id="needsBars" class="needs-bars"></div>
+        <div class="viz-tabs" role="tablist" aria-label="Visualization type">
+          <button class="viz-tab active" role="tab" aria-selected="true" data-tab="bars">Bars</button>
+          <button class="viz-tab" role="tab" aria-selected="false" data-tab="radar">Radar</button>
+        </div>
+        <div id="barsView">
+          <div id="needsBars" class="needs-bars"></div>
+        </div>
+        <div id="radarView" hidden>
+          <canvas id="radarCanvas" width="260" height="220" aria-label="Radar chart of core needs"></canvas>
+        </div>
       </article>
 
+      <!-- Likelihood ring -->
       <article class="results-card liquid-glass">
         <h2>Goal Likelihood</h2>
         <div class="ring-wrap">
@@ -60,18 +86,40 @@
           <div id="likelihoodText" class="ring-text">0%</div>
         </div>
         <p id="insightText" class="insight"></p>
+
+        <!-- Actions -->
+        <div class="actions-row">
+          <button id="shareBtn" class="ghost action-btn" type="button" title="Copy results to clipboard">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+          <button id="exportBtn" class="ghost action-btn" type="button" title="Download results as text">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+        </div>
+      </article>
+
+      <!-- Per-need insight breakdown -->
+      <article class="results-card liquid-glass breakdown-card" id="breakdownCard">
+        <h2>What Your Profile Means</h2>
+        <ul id="breakdownList" class="breakdown-list"></ul>
       </article>
     </section>
 
     <section class="history-card liquid-glass" aria-label="Query history">
       <div class="history-header">
         <h2>History</h2>
+        <button id="clearHistoryBtn" class="ghost action-btn" type="button" title="Clear history">Clear</button>
       </div>
       <ul id="historyList" class="history-list">
         <li class="history-empty">No analyses yet.</li>
       </ul>
     </section>
   </main>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
